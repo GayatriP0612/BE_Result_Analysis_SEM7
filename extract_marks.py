@@ -30,7 +30,22 @@ pytesseract.pytesseract.tesseract_cmd = r"C:\Program Files\Tesseract-OCR\tessera
 
 # Multiple Gemini API Keys for rotation
 GEMINI_API_KEYS = [
-    
+    "AIzaSyCpLQg4g5InyjnIwK3hMAMBQXHlLbeNbx4",
+    "AIzaSyBlQW7FCQo1UH0NOVfC_MhN9kUI3fbOUCg",
+    "AIzaSyCx7q_UXlI1C8yowMEBMGT_aWerlNuX5yE",
+    "AIzaSyB2Stna2jdh0GkNvjW14rZ3P0q6lYWYN8w",
+    "AIzaSyCzuZH1EMqbaBo-vgbbPNr2l0n_bKSjnME",
+    "AIzaSyCxoIt04uoi1Tfb4IhHE45DCnGZYdeiq_g",
+    "AIzaSyBDy81O0ADK1I1mmkdGY3qtf_gPSzi-k6Q",
+    "AIzaSyCGZrt_kyaMJjEpjlv6HF3R9K662f9nXeA",
+    "AIzaSyCzc_B_FSXc48med90IHzwoBXxEpnlpItg",
+    "AIzaSyCviO4U0sYq8CwRbjLrBZXYxcMuyqlgzsw",
+    "AIzaSyBJsuuNVPBzMzni4OJsMbjahq1SK_rNIPU",
+    "AIzaSyD2EUN2Yzvg8BGlTgSGGD0DMJIljJYQnx4",
+    "AIzaSyB6_jTDNmAJ9zUmNxE01bb3g-pUHAlD_6U",
+    "AIzaSyD76h3-ui94MNKrajYOUh7KvQDQwPvPuX4",
+    "AIzaSyC1SGZ6z3pfPfAA1LANB29m9jFw4uotass",
+    "AIzaSyDIHSaswmcJ9a97PIEUzoHOS2C90ZoYxI4"
 ]
 key_pool = cycle(GEMINI_API_KEYS)
 current_key = next(key_pool)
@@ -42,51 +57,88 @@ OUTPUT_XLSX = "BE_2025_Final_Results.xlsx"
 os.makedirs("ocr_pages", exist_ok=True)
 
 # Updated subjects dictionary
+# Updated subjects dictionary
+# Updated subjects dictionary - Using Tail Anchor Strategy (Tot% Crd Grd GP CP)
+# Pattern: SubjectCode ... Marks ... Tot% Crd Grd GP CP
+# Updated subjects dictionary - Robust "Skip Intermediates" Strategy
+# Pattern: SubjectCode ... Marks ... [Skip Tot%, Crd] ... Grd GP CP
 SUBJECTS = {
     "410241": {
         "name": "DESIGN & ANALYSIS OF ALGO",
         "type": "theory",
-        "pattern": r"410241.*?(?:\d{2,3}/\d{2,3}\s+){2}(\d{2,3})/100"
+        "pattern": r"410241.*?(?:\d{2,3}/\d{2,3}\s+){2}(\d{2,3})/100.*?([A-Z][\w\+]*|0)\s+(10|0?[0-9])\s+(\d+)"
     },
     "410242": {
         "name": "MACHINE LEARNING", 
         "type": "theory",
-        "pattern": r"410242.*?(?:\d{2,3}/\d{2,3}\s+){2}(\d{2,3})/100"
+        "pattern": r"410242.*?(?:\d{2,3}/\d{2,3}\s+){2}(\d{2,3})/100.*?([A-Z][\w\+]*|0)\s+(10|0?[0-9])\s+(\d+)"
     },
     "410243": {
         "name": "BLOCKCHAIN TECHNOLOGY",
         "type": "theory",
-        "pattern": r"410243.*?(?:\d{2,3}/\d{2,3}\s+){2}(\d{2,3})/100"
+        "pattern": r"410243.*?(?:\d{2,3}/\d{2,3}\s+){2}(\d{2,3})/100.*?([A-Z][\w\+]*|0)\s+(10|0?[0-9])\s+(\d+)"
     },
     "410244C": {
         "name": "CYBER SEC. & DIGITAL FORENSICS",
         "type": "theory",
-        "pattern": r"410244C.*?(?:\d{2,3}/\d{2,3}\s+){2}(\d{2,3})/100"
+        "pattern": r"410244C.*?(?:\d{2,3}/\d{2,3}\s+){2}(\d{2,3})/100.*?([A-Z][\w\+]*|0)\s+(10|0?[0-9])\s+(\d+)"
     },
     "410245A": {
         "name": "INFORMATION RETRIEVAL",
         "type": "theory",
-        "pattern": r"410245A.*?(?:\d{2,3}/\d{2,3}\s+){2}(\d{2,3})/100"
+        "pattern": r"410245A.*?(?:\d{2,3}/\d{2,3}\s+){2}(\d{2,3})/100.*?([A-Z][\w\+]*|0)\s+(10|0?[0-9])\s+(\d+)"
     },
     "410246": {
         "name": "LABORATORY PRACTICE - III",
         "type": "practical",
-        "pattern": r"410246.*?(\d{2,3})/(\d{2,3})\s+(\d{2,3})/(\d{2,3})"
+        "pattern": r"410246.*?(\d{2,3})/(\d{2,3})\s+(\d{2,3})/(\d{2,3}).*?([A-Z][\w\+]*|0)\s+(10|0?[0-9])\s+(\d+)"
     },
     "410247": {
         "name": "LABORATORY PRACTICE - IV",
         "type": "practical",
-        "pattern": r"410247.*?(\d{2,3})/(?:\d{2,3})(?:\s+(\d{2,3})/(?:\d{2,3}))?" # Flexible pattern
+        "pattern": r"410247.*?(\d{2,3})/(?:\d{2,3})(?:\s+(\d{2,3})/(?:\d{2,3}))?.*?([A-Z][\w\+]*|0)\s+(10|0?[0-9])\s+(\d+)"
     },
     "410248": {
         "name": "PROJECT STAGE - I",
         "type": "termwork",
-        "pattern": r"410248.*?(\d{2,3})/(\d{2,3})"
+        "pattern": r"410248.*?(\d{2,3})/(\d{2,3}).*?([A-Z][\w\+]*|0)\s+(10|0?[0-9])\s+(\d+)"
     },
      "410249A": {
         "name": "MOOC - LEARN NEW SKILLS",
         "type": "grade",
         "pattern": r"410249A.*?\s+(PP|AC|FA|EX|P)"
+    },
+    # Honors Subjects
+    "410501": {
+        "name": "HON-MACH. LEARN.& DATA SCI.",
+        "type": "theory", 
+        "pattern": r"410501\s+HON-MACH\.\s+LEARN\.\&\s+DATA\s+SCI\..*?(?:\d{2,3}/\d{2,3}\s+){2}(\d{2,3})/100.*?([A-Z][\w\+]*|0)\s+(10|0?[0-9])\s+(\d+)"
+    },
+    "410501_PR": {
+        "name": "HON-MACH. LEARN.& DATA SCI. (PR)",
+        "type": "theory", # Treat as theory to extract single Total mark
+        # Use Greedy .* to find the LAST mark component (Total) before Grade
+        "pattern": r"410501\s+HON-MACH\.\s+LEARN\.\&\s+DATA\s+SCI\.\(PR\).*(\d{2,3})/\d+.*?([A-Z][\w\+]*|0)\s+(10|0?[0-9])\s+(\d+)"
+    },
+    "410301": {
+        "name": "HON-MACHINE LEARNING",
+        "type": "theory",
+        "pattern": r"410301\s+HON-MACHINE\s+LEARNING.*?(?:\d{2,3}/\d{2,3}\s+){2}(\d{2,3})/100.*?([A-Z][\w\+]*|0)\s+(10|0?[0-9])\s+(\d+)"
+    },
+    "410301_PR": {
+        "name": "HON-MACHINE LEARNING (PR)",
+        "type": "theory",
+        "pattern": r"410301\s+HON-MACHINE\s+LEARNING\s*\(PR\).*(\d{2,3})/\d+.*?([A-Z][\w\+]*|0)\s+(10|0?[0-9])\s+(\d+)"
+    },
+    "410401": {
+        "name": "HON-IOT & EMBEDDED SECURITY",
+        "type": "theory",
+        "pattern": r"410401\s+HON-IOT\s+\&\s+EMBEDDED\s+SECURITY.*?(?:\d{2,3}/\d{2,3}\s+){2}(\d{2,3})/100.*?([A-Z][\w\+]*|0)\s+(10|0?[0-9])\s+(\d+)"
+    },
+    "410402": {
+        "name": "HON-RISK ASSMNT LABORATORY (PR)",
+        "type": "theory",
+        "pattern": r"410402\s+HON-RISK\s+ASSMNT\s+LABORATORY\s*\(PR\).*(\d{2,3})/\d+.*?([A-Z][\w\+]*|0)\s+(10|0?[0-9])\s+(\d+)"
     }
 }
 
@@ -97,16 +149,37 @@ REQUIRED_COLUMNS = [
     "Mother",
     "PRN",
     "DESIGN & ANALYSIS OF ALGO",
+    "DESIGN & ANALYSIS OF ALGO (Grade)",
     "MACHINE LEARNING",
+    "MACHINE LEARNING (Grade)",
     "BLOCKCHAIN TECHNOLOGY",
+    "BLOCKCHAIN TECHNOLOGY (Grade)",
     "CYBER SEC. & DIGITAL FORENSICS",
+    "CYBER SEC. & DIGITAL FORENSICS (Grade)",
     "INFORMATION RETRIEVAL",
+    "INFORMATION RETRIEVAL (Grade)",
     "LABORATORY PRACTICE - III (TW)",
     "LABORATORY PRACTICE - III (PR)",
+    "LABORATORY PRACTICE - III (Grade)",
     "LABORATORY PRACTICE - IV (TW)",
     "LABORATORY PRACTICE - IV (PR)",
+    "LABORATORY PRACTICE - IV (Grade)",
     "PROJECT STAGE - I",
+    "PROJECT STAGE - I (Grade)",
     "MOOC - LEARN NEW SKILLS",
+    # Honors Columns
+    "HON-MACH. LEARN.& DATA SCI.",
+    "HON-MACH. LEARN.& DATA SCI. (Grade)",
+    "HON-MACH. LEARN.& DATA SCI. (PR)",
+    "HON-MACH. LEARN.& DATA SCI. (PR) (Grade)",
+    "HON-MACHINE LEARNING",
+    "HON-MACHINE LEARNING (Grade)",
+    "HON-MACHINE LEARNING (PR)",
+    "HON-MACHINE LEARNING (PR) (Grade)",
+    "HON-IOT & EMBEDDED SECURITY",
+    "HON-IOT & EMBEDDED SECURITY (Grade)",
+    "HON-RISK ASSMNT LABORATORY (PR)",
+    "HON-RISK ASSMNT LABORATORY (PR) (Grade)",
     "SGPA",
     "TOTAL CREDITS"
 ]
@@ -135,6 +208,56 @@ def enhance_image(img):
     except Exception as e:
         print(f"Image enhancement failed: {str(e)}")
         return img
+
+GP_MAP = {
+    '10': 'O',
+    '09': 'A+',
+    '9': 'A+',
+    '08': 'A',
+    '8': 'A',
+    '07': 'B+',
+    '7': 'B+',
+    '06': 'B',
+    '6': 'B',
+    '05': 'C',
+    '5': 'C',
+    '04': 'P',
+    '4': 'P',
+    '00': 'F',
+    '0': 'F'
+}
+
+def clean_grade(grade, gp=None):
+    """Normalize grade strings to standard formats, using GP if available"""
+    if not grade or grade == "NA":
+        return "NA"
+    
+    # If GP Provided, use it as Authority
+    if gp and gp in GP_MAP:
+        return GP_MAP[gp]
+
+    # Common OCR fixups (Fallback)
+    grade = grade.upper().strip()
+    
+    # Fix 'Bt' -> 'B+'
+    grade = grade.replace("BT", "B+")
+    
+    # Fix 'Ct' -> 'C+'
+    grade = grade.replace("CT", "C+")
+
+    # Fix 'A1' -> 'A+'
+    grade = grade.replace("A1", "A+")
+    
+    # Removed unsafe "AT" -> "A+" because it conflicts with "A" being read as "At"
+    # Logic: "At" is ambiguous. Without GP, we can't be 100% sure. 
+    # But usually, if GP is missing, we might assume A+ if it looks like At?
+    # For now, safer to leave it or rely on valid chars.
+    
+    # Fix 0 -> O (Outstanding)
+    if grade == '0':
+        grade = 'O'
+        
+    return grade
 
 def extract_data_regex(text):
     """Fallback regex extraction for when Gemini fails or for validation"""
@@ -191,47 +314,62 @@ def extract_data_regex(text):
     # Subject Marks
     for code, info in SUBJECTS.items():
         pattern = info['pattern']
-        match = re.search(pattern, text, re.DOTALL | re.IGNORECASE)
+        # Use re.IGNORECASE only; removing re.DOTALL prevents bleeding into next subject lines
+        match = re.search(pattern, text, re.IGNORECASE)
         name = info['name']
         
         if match:
-            if info['type'] == 'theory':
-                # My pattern in SUBJECTS capture only one group (Total)
+             # Identify Grade and GP
+             if info['type'] == 'grade':
+                 # MOOC case
+                 val = match.group(1)
+                 data[name] = clean_grade(val, gp=None)
+             else:
+                 # Robust Pattern: Marks ... [Skip] ... <Grade> <GP> <CP>
+                 # We simply take the LAST 3 groups for Grade, GP, CP.
+                 # This works because all patterns end with: ([A-Z][\w\+]*|0)\s+(10|0?[0-9])\s+(\d+)
+                 
+                 groups = match.groups()
+                 grade_val = groups[-3]
+                 gp_val = groups[-2]
+                 # cp_val = groups[-1] # Not used currently
+                 
+                 data[f"{name} (Grade)"] = clean_grade(grade_val, gp=gp_val)
+
+             if info['type'] == 'theory':
+                # Group 1 is Marks
                 if match.lastindex and match.lastindex >= 1:
                      val = match.group(1)
                      data[name] = val if val else "NA"
-            elif info['type'] == 'practical':
-                # Pattern usually has 4 groups (TW_score, TW_tot, PR_score, PR_tot) or 2 groups (TW_score, TW_tot)
-                # My simplified Lab IV pattern: (\d)/(...) optionally (\d)/(...)
-                # group(1) is TW. group(2) is PR (if present)
-                
+             elif info['type'] == 'practical':
                 # Check for TW
                 tw_val = match.group(1) if match.lastindex >= 1 else None
                 data[f"{name} (TW)"] = tw_val if tw_val else "NA"
                 
                 # Check for PR
-                # Note: Regex logic depends on how many groups defined in pattern
-                # Lab III pattern has 4 capturing groups (score, tot, score, tot) => group(1) & group(3)
                 if "Lab III" in name or "LABORATORY PRACTICE - III" in name:
+                     # PR is group 3
                      pr_val = match.group(3) if match.lastindex >= 3 else None
                      data[f"{name} (PR)"] = pr_val if pr_val else "NA"
                 else:
-                     # Lab IV pattern: group 1 (TW), group 2 (PR score)
+                     # Lab IV: PR is group 2
                      pr_val = match.group(2) if match.lastindex >= 2 else None
                      data[f"{name} (PR)"] = pr_val if pr_val else "NA"
 
-            elif info['type'] == 'termwork':
-                 val = match.group(1) if match.lastindex >= 1 else None
-                 data[name] = val if val else "NA"
-            elif info['type'] == 'grade':
-                 val = match.group(1) if match.lastindex >= 1 else None
-                 data[name] = val if val else "NA"
+             elif info['type'] == 'termwork':
+                  val = match.group(1) if match.lastindex >= 1 else None
+                  data[name] = val if val else "NA"
+
         else:
-            if info['type'] == 'practical':
+            if info['type'] == 'grade':
+                 data[name] = "NA"
+            elif info['type'] == 'practical':
                 data[f"{name} (TW)"] = "NA"
                 data[f"{name} (PR)"] = "NA"
+                data[f"{name} (Grade)"] = "NA"
             else:
                 data[name] = "NA"
+                data[f"{name} (Grade)"] = "NA"
                 
     return data
 
@@ -300,18 +438,46 @@ Fields to Extract:
 2. "Name": The student's full name (e.g. KOSHATWAR VAISHANAVI RANJIT)
 3. "Mother": The mother's name (e.g. RENUKA RANJIT KOSHATWAR or just RENUKA). Look for "MOTHER :"
 4. "PRN": The PRN number (e.g. 72278407E)
-5. "subjects": A nested object containing marks for these exact subjects:
-    - "DESIGN & ANALYSIS OF ALGO": Total marks (e.g. 064/100 -> extract 64)
+5. "subjects": A nested object containing marks for these exact subjects.
+   - For all subjects, extract "Grade" (Grd) AND "GP" (Grade Point, a number from 0-10).
+   
+   Expected Keys:
+    - "DESIGN & ANALYSIS OF ALGO": Total marks
+    - "DESIGN & ANALYSIS OF ALGO (Grade)": Grade (e.g. A+, O)
+    - "DESIGN & ANALYSIS OF ALGO (GP)": Grade Point (e.g. 09, 10)
+    
     - "MACHINE LEARNING": Total marks
+    - "MACHINE LEARNING (Grade)": Grade
+    - "MACHINE LEARNING (GP)": GP
+    
     - "BLOCKCHAIN TECHNOLOGY": Total marks
-    - "CYBER SEC. & DIGITAL FORENSICS": Total marks (Note: text might say "CYBER SEC. & DIG. FORENSICS")
+    - "BLOCKCHAIN TECHNOLOGY (Grade)": Grade
+    - "BLOCKCHAIN TECHNOLOGY (GP)": GP
+    
+    - "CYBER SEC. & DIGITAL FORENSICS": Total marks
+    - "CYBER SEC. & DIGITAL FORENSICS (Grade)": Grade
+    - "CYBER SEC. & DIGITAL FORENSICS (GP)": GP
+    
     - "INFORMATION RETRIEVAL": Total marks
-    - "LABORATORY PRACTICE - III (TW)": Term Work marks (e.g. 042/050 -> extract 42)
+    - "INFORMATION RETRIEVAL (Grade)": Grade
+    - "INFORMATION RETRIEVAL (GP)": GP
+    
+    - "LABORATORY PRACTICE - III (TW)": Term Work marks
     - "LABORATORY PRACTICE - III (PR)": Practical marks
+    - "LABORATORY PRACTICE - III (Grade)": Grade
+    - "LABORATORY PRACTICE - III (GP)": GP
+    
     - "LABORATORY PRACTICE - IV (TW)": Term Work marks
     - "LABORATORY PRACTICE - IV (PR)": Practical marks
+    - "LABORATORY PRACTICE - IV (Grade)": Grade
+    - "LABORATORY PRACTICE - IV (GP)": GP
+    
     - "PROJECT STAGE - I": Term Work marks
-    - "MOOC - LEARN NEW SKILLS": Grade or Status (e.g. PP, AC, or marks)
+    - "PROJECT STAGE - I (Grade)": Grade
+    - "PROJECT STAGE - I (GP)": GP
+    
+    - "MOOC - LEARN NEW SKILLS": Grade or Status
+
 6. "SGPA": The SGPA value (e.g. 7.85). Look for "SGPA1" or "SGPA".
 7. "TOTAL CREDITS": The total credits earned (e.g. 20).
 
@@ -323,15 +489,9 @@ JSON Structure:
   "prn": "...",
   "subjects": {{
     "DESIGN & ANALYSIS OF ALGO": "...",
-    "MACHINE LEARNING": "...",
-    "BLOCKCHAIN TECHNOLOGY": "...",
-    "CYBER SEC. & DIGITAL FORENSICS": "...",
-    "INFORMATION RETRIEVAL": "...",
-    "LABORATORY PRACTICE - III (TW)": "...",
-    "LABORATORY PRACTICE - III (PR)": "...",
-    "LABORATORY PRACTICE - IV (TW)": "...",
-    "LABORATORY PRACTICE - IV (PR)": "...",
-    "PROJECT STAGE - I": "...",
+    "DESIGN & ANALYSIS OF ALGO (Grade)": "...",
+    "DESIGN & ANALYSIS OF ALGO (GP)": "...",
+    ... other subjects ...
     "MOOC - LEARN NEW SKILLS": "..."
   }},
   "sgpa": "...",
@@ -392,7 +552,17 @@ def process_student_from_data(data):
     # Map subject marks to student dict
     for col in REQUIRED_COLUMNS:
         if col not in student:
-            student[col] = subjects.get(col, "NA")
+            # If requesting Grade, try to find GP for it to validate
+            if "(Grade)" in col:
+                subj_base = col.replace(" (Grade)", "")
+                raw_grade = subjects.get(col, "NA")
+                gp_key = f"{subj_base} (GP)"
+                raw_gp = subjects.get(gp_key, None) # Get GP if exists from Gemini
+                
+                # Apply validation using GP
+                student[col] = clean_grade(raw_grade, gp=raw_gp)
+            else:
+                student[col] = subjects.get(col, "NA")
             
     return student
 
