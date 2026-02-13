@@ -30,22 +30,7 @@ pytesseract.pytesseract.tesseract_cmd = r"C:\Program Files\Tesseract-OCR\tessera
 
 # Multiple Gemini API Keys for rotation
 GEMINI_API_KEYS = [
-    "AIzaSyCpLQg4g5InyjnIwK3hMAMBQXHlLbeNbx4",
-    "AIzaSyBlQW7FCQo1UH0NOVfC_MhN9kUI3fbOUCg",
-    "AIzaSyCx7q_UXlI1C8yowMEBMGT_aWerlNuX5yE",
-    "AIzaSyB2Stna2jdh0GkNvjW14rZ3P0q6lYWYN8w",
-    "AIzaSyCzuZH1EMqbaBo-vgbbPNr2l0n_bKSjnME",
-    "AIzaSyCxoIt04uoi1Tfb4IhHE45DCnGZYdeiq_g",
-    "AIzaSyBDy81O0ADK1I1mmkdGY3qtf_gPSzi-k6Q",
-    "AIzaSyCGZrt_kyaMJjEpjlv6HF3R9K662f9nXeA",
-    "AIzaSyCzc_B_FSXc48med90IHzwoBXxEpnlpItg",
-    "AIzaSyCviO4U0sYq8CwRbjLrBZXYxcMuyqlgzsw",
-    "AIzaSyBJsuuNVPBzMzni4OJsMbjahq1SK_rNIPU",
-    "AIzaSyD2EUN2Yzvg8BGlTgSGGD0DMJIljJYQnx4",
-    "AIzaSyB6_jTDNmAJ9zUmNxE01bb3g-pUHAlD_6U",
-    "AIzaSyD76h3-ui94MNKrajYOUh7KvQDQwPvPuX4",
-    "AIzaSyC1SGZ6z3pfPfAA1LANB29m9jFw4uotass",
-    "AIzaSyDIHSaswmcJ9a97PIEUzoHOS2C90ZoYxI4"
+    
 ]
 key_pool = cycle(GEMINI_API_KEYS)
 current_key = next(key_pool)
